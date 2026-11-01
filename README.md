@@ -39,7 +39,7 @@ In the snippets, `stub` is your generated stub and `Msg` your message type.
 
 ### Bidirectional stream: `BidiStream`
 
-![BidiStream: write() and read() on a stream-stream call](docs/bidi.gif)
+![BidiStream: write() and read() on a stream-stream call](https://raw.githubusercontent.com/ValeriyMenshikov/grpc-sync-stream/main/docs/bidi.gif)
 
 ```python
 from grpc_sync_stream import EOF, BidiStream
@@ -58,7 +58,7 @@ with BidiStream(stub.Chat, timeout=30) as s:
 
 ### Server stream: `ResponseStream`
 
-![ResponseStream: one request, a stream of responses](docs/response_stream.gif)
+![ResponseStream: one request, a stream of responses](https://raw.githubusercontent.com/ValeriyMenshikov/grpc-sync-stream/main/docs/response_stream.gif)
 
 The request goes to the constructor.
 
@@ -74,7 +74,7 @@ with ResponseStream(stub.Expand, Msg(value="x"), read_timeout=5) as s:
 
 ### Client stream: `RequestStream`
 
-![RequestStream: a stream of requests, one response](docs/request_stream.gif)
+![RequestStream: a stream of requests, one response](https://raw.githubusercontent.com/ValeriyMenshikov/grpc-sync-stream/main/docs/request_stream.gif)
 
 ```python
 from grpc_sync_stream import RequestStream

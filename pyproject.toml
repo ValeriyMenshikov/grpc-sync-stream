@@ -24,6 +24,11 @@ classifiers = [
     "Typing :: Typed",
 ]
 
+[project.urls]
+Homepage = "https://github.com/ValeriyMenshikov/grpc-sync-stream"
+Repository = "https://github.com/ValeriyMenshikov/grpc-sync-stream"
+Issues = "https://github.com/ValeriyMenshikov/grpc-sync-stream/issues"
+
 [dependency-groups]
 dev = [
     "mypy>=1.13",
