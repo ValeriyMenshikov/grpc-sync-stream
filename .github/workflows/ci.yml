@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+      - run: uv sync --locked
+      - run: uv run ruff check
+      - run: uv run ruff format --check
+      - run: uv run mypy
+
+  test:
+    name: test (py${{ matrix.python }}, grpcio ${{ matrix.grpcio }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11", "3.12", "3.13", "3.14"]
+        grpcio: [lowest, latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install (latest grpcio)
+        if: matrix.grpcio == 'latest'
+        run: uv sync --upgrade-package grpcio
+      # The floor in pyproject.toml (grpcio>=1.49.1) predates wheels for newer
+      # Pythons; --only-binary makes "lowest" the oldest release with a wheel
+      # for this interpreter instead of a source build.
+      - name: Install (lowest grpcio)
+        if: matrix.grpcio == 'lowest'
+        run: |
+          uv sync
+          uv pip install --resolution lowest-direct --only-binary grpcio --upgrade-package grpcio "grpcio>=1.49.1"
+      - run: uv run --no-sync python -c "import grpc, sys; print(sys.version); print('grpcio', grpc.__version__)"
+      - run: uv run --no-sync pytest
+      - name: mypy on tests and examples
+        if: matrix.grpcio == 'latest'
+        run: uv run --no-sync mypy

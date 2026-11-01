@@ -218,3 +218,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local
+.idea/
+GRPC_SYNC_STREAM_BRIEF.md
